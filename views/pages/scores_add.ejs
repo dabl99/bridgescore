@@ -13,38 +13,66 @@
     <h1>Add a score</h1> 
   </div>
 </div>
-<div class=container>
-  <form action="" method="post" >
-    <div class="formgroup">
-      <label for="name">Name:</label>
-      <input type="text" id="name" name="name" placeholder="Enter your full name" />
-    </div>
 
-    <div class="formgroup">
-      <label for="email">Email:</label>
-      <input type="email" id="email" name="email" placeholder="Enter your email address" />
-    </div>
+<div class="container-fluid">
+    <form action="" method="post" class="form-horizontal" >
 
-    <div class="formgroup">
-      <label for="tableNumber">Table Number:</label>
-      <input type="number" id="tableNumber" name="tableNumber" placeholder="Enter your table number"></input>
-    </div>
+      <div class="form-group">
+        <label for="tableNumber">Table Number</label>
+        <input class="form-control" type="number" id="tableNumber" name="tableNumber" placeholder="enter a number" required />
+      </div>
 
-    <div class="formgroup">
-      <label for="ScoreNS">Score NS:</label>
-      <input type="number" id="scoreNS" name="scoreNS" placeholder="Enter your north south score"></input>
-    </div>
+      <div class="form-group">
+        <label for="boardNumber">Board Number</label>
+        <input class="form-control" type="number" id="boardNumber" name="boardNumber" placeholder="enter a number" required />
+      </div>
 
-    <div class="formgroup">
-      <label for="ScoreEW">Score EW:</label>
-      <input type="number" id="scoreEW" name="scoreEW" placeholder="Enter your east west score"></input>
-    </div>
+      <div class="form-group">
+        <label for="contract">Contract</label>
+        <select class="form-control" type="select" id="contract" name="contract" >
+          <% contracts.forEach(function(contract) { %>
+          <option value="{%=contract%}"><%=contract%></option>
+          <% }); %>
+        </select>
+      </div>
 
-    <input type="submit" value="Submit Score" />
-  </form>
+      <div class="form-group">
+        <label for="doubled">Doubled?</label>
+        <select class="form-control" type="number" id="doubled" name="doubled" >
+          <option value="true">Yes</option>
+          <option value="false">No</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="declarer">Declarer</label>
+        <select class="form-control" type="number" id="declarer" name="declarer" >
+          <option value="north">North</option>
+          <option value="south">South</option>
+          <option value="south">East</option>
+          <option value="south">West</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="declarerTricks">Declarer Tricks</label>
+        <input class="form-control" type="number" id="declarerTricks" name="declarerTricks" min="0" max="13" placeholder="enter a number" required />
+      </div>
+
+      <div class="form-group">
+        <label for="nsPair">NS Pair Number</label>
+        <input class="form-control" type="number" id="nsPair" name="nsPair" min="0" max="10" placeholder="enter a number" required />
+      </div>
+
+      <div class="form-group">
+        <label for="ewPair">EW Pair Number</label>
+        <input class="form-control" type="number" id="ewPair" name="ewPair" min="0" max="10" palceholder="enter a number" required />
+      </div>
+
+
+      <input class="form-control" type="submit" value="Submit Score" />
+    </form>
 </div>
-
-
 
 </body>
 </html>

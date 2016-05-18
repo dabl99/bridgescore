@@ -7,8 +7,7 @@ app.set('port', (process.env.PORT || 5000));
 
 app.use(express.static(__dirname + '/public'));
 
-var scoresNS = 0;
-var scoresEW = 0;
+var scores = []; 
 
 // views is directory for all template files
 app.set('views', __dirname + '/views');
@@ -19,28 +18,41 @@ app.get('/', function(request, response) {
 });
 
 app.get('/scores', function(request, response) {
-  response.render('pages/scores', { scoresNS: scoresNS, scoresEW: scoresEW  });
+  response.render('pages/scores', { scores: scores });
 });
 
 app.get('/scores/add', function(request, response) {
-  response.render('pages/scores_add');
+  var contracts = 
+    "1C 1D 1H 1S 1NT 2C 2D 2H 2S 2NT 3C 3D 3H 3S 3NT 4C 4D 4H 4S 4NT 5C 5D 5H 5S 5NT 6C 6D 6H 6S 6NT 7C 7D 7H 7S 7NT".split(" ");
+  response.render('pages/scores_add', 
+    { contracts: contracts });
 });
 
 
 app.post('/scores/add', urlencodedParser, function(req, res) {
-  var scoreNS = req.body.scoreNS;
-  var scoreEW = req.body.scoreEW;
-  var name = req.body.name;
-  var table = req.body.tableNumber;
 
-  console.log(name);
-  console.log(name);
-  console.log(scoreNS);
-  console.log(scoreEW);
-  console.log(table);
+  var b = req.body;
 
-  scoresNS += parseInt(scoreNS);
-  scoresEW += parseInt(scoreEW);
+  console.log();
+  console.log(b.tableNumber);
+  console.log(b.boardNumer);
+  console.log(b.doubled);
+  console.log(b.declarer);
+  console.log(b.declarerTricks);
+  console.log(b.nsPair);
+  console.log(b.ewPair);
+
+  var data = {
+    tableNumber:b.tableNumber,
+    boardNumber:b.boardNumber,
+    doubled:b.doubled,
+    declarer:b.declarer,
+    declarerTricks:b.declarerTricks,
+    nsPair:b.nsPair,
+    ewPair:b.ewPair,
+  }
+
+  scores.push(data)
 
   res.redirect('/scores');
 });

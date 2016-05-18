@@ -15,10 +15,10 @@
 </div>
 
 <div class="container">
-  <h2>Scores NW</h2>
-  <%= scoresNS %>
-  <h2>Scores EW</h2>
-  <%= scoresEW %>
+    <% scores.forEach(function(score) { %>
+    <%= JSON.stringify(score) %>
+    </br>
+    <% }); %>
 </div>
 
 
