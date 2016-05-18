@@ -7,6 +7,9 @@ app.set('port', (process.env.PORT || 5000));
 
 app.use(express.static(__dirname + '/public'));
 
+var scoresNS = 0;
+var scoresEW = 0;
+
 // views is directory for all template files
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
@@ -16,7 +19,7 @@ app.get('/', function(request, response) {
 });
 
 app.get('/scores', function(request, response) {
-  response.render('pages/scores');
+  response.render('pages/scores', { scoresNS: scoresNS, scoresEW: scoresEW  });
 });
 
 app.get('/scores/add', function(request, response) {
@@ -36,8 +39,12 @@ app.post('/scores/add', urlencodedParser, function(req, res) {
   console.log(scoreEW);
   console.log(table);
 
+  scoresNS += parseInt(scoreNS);
+  scoresEW += parseInt(scoreEW);
+
   res.redirect('/scores');
 });
+
 
 
 app.get('/help', function(request, response) {
