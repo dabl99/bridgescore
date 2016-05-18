@@ -1,5 +1,7 @@
 var express = require('express');
 var app = express();
+var bodyParser = require('body-parser')
+var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
 app.set('port', (process.env.PORT || 5000));
 
@@ -20,6 +22,23 @@ app.get('/scores', function(request, response) {
 app.get('/scores/add', function(request, response) {
   response.render('pages/scores_add');
 });
+
+
+app.post('/scores/add', urlencodedParser, function(req, res) {
+  var scoreNS = req.body.scoreNS;
+  var scoreEW = req.body.scoreEW;
+  var name = req.body.name;
+  var table = req.body.tableNumber;
+
+  console.log(name);
+  console.log(name);
+  console.log(scoreNS);
+  console.log(scoreEW);
+  console.log(table);
+
+  res.redirect('/scores');
+});
+
 
 app.get('/help', function(request, response) {
   response.render('pages/help');
