@@ -13,7 +13,7 @@ $ npm install
 $ npm start -p 7000
 ```
 
-Your app should now be running on [localhost:5000](http://localhost:7000/).
+Your app should now be running on [localhost:7000](http://localhost:7000/).
 
 ## Deploying to Heroku
 
