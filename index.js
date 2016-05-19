@@ -8,12 +8,11 @@ var json2csv = require('json2csv');
 
 var mongodb = require("mongodb");
 
-var ObjectID = mongodb.ObjectID;
-
-var CONTACTS_COLLECTION = "scores";
-
+// Use the URI set by heroku or if not try to see if there
+// is a local mongodb server running 
 var dburl = process.env.MONGODB_URI ? process.env.MONGODB_URI : "mongodb://127.0.0.1";
 
+// Connect to the mongodb database
 mongodb.MongoClient.connect(dburl, function (err, database) {
 
   if (err) {
@@ -28,6 +27,7 @@ mongodb.MongoClient.connect(dburl, function (err, database) {
 });
   
 
+// Start the server on the specified port
 app.set('port', (process.env.PORT || 5000));
 
 app.use(express.static(__dirname + '/public'));
@@ -37,11 +37,19 @@ app.use(express.static(__dirname + '/public'));
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 
+
+
+// Get all the scores from MONGODB
 function getScores(callback){
   db.collection('scores').find().toArray(function(err, scores){
     console.log(scores);
     callback(err, scores);
   });
+}
+
+// Add a new score to MONGODB
+function addScore(data, callback){
+  db.collection('scores').insertOne(data, callback); 
 }
 
 app.get('/', function(request, response) {
@@ -102,8 +110,8 @@ app.post('/scores/add', urlencodedParser, function(req, res) {
     ewPair:parseInt(b.ewPair),
   }
 
-  db.collection('scores').insertOne(data, function(err, r){
-
+  addScore(data, function(err, r){
+    assert.equal(null,err);
   });
 
   res.redirect('/scores');
