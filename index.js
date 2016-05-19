@@ -1,34 +1,73 @@
 var express = require('express');
+var assert = require('assert');
 var app = express();
 var bodyParser = require('body-parser')
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
 var json2csv = require('json2csv');
+
+var mongodb = require("mongodb");
+
+var ObjectID = mongodb.ObjectID;
+
+var CONTACTS_COLLECTION = "scores";
+
+var dburl = process.env.MONGODB_URI ? process.env.MONGODB_URI : "mongodb://127.0.0.1";
+
+mongodb.MongoClient.connect(dburl, function (err, database) {
+
+  if (err) {
+    console.log(err);
+    process.exit(1);
+  }
+
+  // Save database object from the callback for reuse.
+  db = database;
+  console.log("Database connection ready");
+
+});
   
 
 app.set('port', (process.env.PORT || 5000));
 
 app.use(express.static(__dirname + '/public'));
 
-var scores = []; 
 
 // views is directory for all template files
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
+
+function getScores(callback){
+  db.collection('scores').find().toArray(function(err, scores){
+    console.log(scores);
+    callback(err, scores);
+  });
+}
 
 app.get('/', function(request, response) {
   response.redirect('/scores');
 });
 
 app.get('/scores', function(request, response) {
-  response.render('pages/scores', { scores: scores });
+
+  getScores(function(err, scores){
+    response.render('pages/scores', { scores: scores });
+  });
+
 });
+
 
 app.get('/scores.csv', function(request, response) {
   var json2csv = require('json2csv');
-  json2csv({data:scores},function(err,csv){
-    response.header("Content-Type", "text/csv");
-    response.send(csv)
+  
+  getScores(function(err, scores){
+    assert.equal(null, err);
+    json2csv({data:scores},function(err,csv){
+      assert.equal(null, err);
+      response.header("Content-Type", "text/csv");
+      response.send(csv)
+    });
+
   });
 });
 
@@ -63,7 +102,9 @@ app.post('/scores/add', urlencodedParser, function(req, res) {
     ewPair:parseInt(b.ewPair),
   }
 
-  scores.push(data)
+  db.collection('scores').insertOne(data, function(err, r){
+
+  });
 
   res.redirect('/scores');
 });

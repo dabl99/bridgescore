@@ -13,7 +13,8 @@
     "ejs": "2.4.1",
     "express": "4.13.3",
     "body-parser":"",
-    "json2csv":"3.4.1"
+    "json2csv":"3.4.1",
+    "mongodb":""
   },
   "repository": {
     "type": "git",
