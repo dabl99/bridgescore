@@ -3,6 +3,9 @@ var app = express();
 var bodyParser = require('body-parser')
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
+var json2csv = require('json2csv');
+  
+
 app.set('port', (process.env.PORT || 5000));
 
 app.use(express.static(__dirname + '/public'));
@@ -19,6 +22,14 @@ app.get('/', function(request, response) {
 
 app.get('/scores', function(request, response) {
   response.render('pages/scores', { scores: scores });
+});
+
+app.get('/scores.csv', function(request, response) {
+  var json2csv = require('json2csv');
+  json2csv({data:scores},function(err,csv){
+    response.header("Content-Type", "text/csv");
+    response.send(csv)
+  });
 });
 
 app.get('/scores/add', function(request, response) {
@@ -43,13 +54,13 @@ app.post('/scores/add', urlencodedParser, function(req, res) {
   console.log(b.ewPair);
 
   var data = {
-    tableNumber:b.tableNumber,
-    boardNumber:b.boardNumber,
+    tableNumber:parseInt(b.tableNumber),
+    boardNumber:parseInt(b.boardNumber),
     doubled:b.doubled,
     declarer:b.declarer,
-    declarerTricks:b.declarerTricks,
-    nsPair:b.nsPair,
-    ewPair:b.ewPair,
+    declarerTricks:parseInt(b.declarerTricks),
+    nsPair:parseInt(b.nsPair),
+    ewPair:parseInt(b.ewPair),
   }
 
   scores.push(data)
