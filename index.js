@@ -40,6 +40,7 @@ app.set('view engine', 'ejs');
 
 
 // Get all the scores from MONGODB
+// See http://mongodb.github.io/node-mongodb-native/2.1/tutorials/crud/
 function getScores(callback){
   db.collection('scores').find().toArray(function(err, scores){
     console.log(scores);
@@ -48,6 +49,7 @@ function getScores(callback){
 }
 
 // Add a new score to MONGODB
+// See http://mongodb.github.io/node-mongodb-native/2.1/tutorials/crud/
 function addScore(data, callback){
   db.collection('scores').insertOne(data, callback); 
 }
